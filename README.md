@@ -14,6 +14,8 @@ After cloning this repository make the script executable:
 
 ```
 $ chmod +x miner_latest.sh
+$ sudo touch /var/log/miner_latest.log
+
 ```
 
 ## Change architecture 
@@ -35,18 +37,20 @@ $ ./miner_latest.sh
 This can be called from a cron or ran in a shell.
 
 ## Using cron
-Add the following lines to your crontab using ``cron -e`` to run the escript dayly at 1 o clock at night:
+Add the following lines to your crontab using ``sudo crontab -e`` to run the script daily at 1 o clock at night:
 
 ```
-# Check for updates on miner image verey night at 1 o clock
-0 1 * * * cd ~/helium_miner_scripts $$ ./miner_latest.sh >> /var/log/miner_latest.log 2>&1
+# Check for updates on miner image every night at 1 o clock
+# Use whatever path you have your repo setup with.
+# If you need to test your cron you can use the following site and add "&& curl -s 'https://webhook.site/#!/~'" to the end of your cron and it will make a web request to your specific url when it completes.
+0 1 * * * /home/pi/helium_miner_scripts/miner_latest.sh >> /var/log/miner_latest.log 2>&1
 ```
 
 # Extra
 
-Check if your miner is running and receiving data fromyour gateway:
+Check if your miner is running and receiving data from your gateway:
 ```
-$ docker exec miner tail -f /var/log/miner/console.log | grep lora
+$ docker exec miner tail -f /var/log/miner/console.log | grep "lora"
 ```
 
 Check progress of your miner on the blockchain:
